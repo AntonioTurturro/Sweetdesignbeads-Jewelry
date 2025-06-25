@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Marianna Turt's Custom Jewelry</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Custom Bead Jewelry</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -51,6 +51,7 @@
       border: 1.5px solid #666;
       position: absolute;
       box-sizing: border-box;
+      cursor: pointer;
     }
     .jewelry-type {
       margin-top: 20px;
@@ -69,10 +70,24 @@
       margin-left: auto;
       margin-right: auto;
     }
+    /* Custom tooltip */
+    #tooltip {
+      position: fixed;
+      background: rgba(0,0,0,0.75);
+      color: white;
+      padding: 5px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease-in-out;
+      z-index: 1000;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
-  <h1>Custom Bead Jewelry by Marianna Turt</h1>
+  <h1>Custom Bead Jewelry</h1>
   <label>Choose Bead Colors:</label>
   <div class="color-palette" id="colorPalette"></div>
 
@@ -86,11 +101,14 @@
 
   <div class="jewelry-preview" id="jewelryPreview"></div>
 
+  <div id="tooltip"></div>
+
   <script>
-    const colors = ['#e74c3c','#3498db','#27ae60','#f1c40f','#9b59b6','#2c3e50','#ecf0f1','#fd79a8','#e67e22'];
+    const colors = ['#e74c3c','#3498db','#27ae60','#f1c40f','#9b59b6','#2c3e50','#ecf0f1','#fd79a8','#e67e22','#1abc9c','#8e44ad','#34495e','#c0392b','#2980b9','#16a085','#f39c12','#d35400','#7f8c8d'];
     const palette = document.getElementById('colorPalette');
     const preview = document.getElementById('jewelryPreview');
     const removeBtn = document.getElementById('removeAllBtn');
+    const tooltip = document.getElementById('tooltip');
     let selectedBeads = [];
     let jewelryType = 'necklace';
 
@@ -126,21 +144,24 @@
       if (jewelryType === 'earrings') {
         beadsEls = drawEarrings(selectedBeads, centerX, centerY);
       } else {
-        const radius = jewelryType === 'necklace' ? 140 : 100;
-        const angleStep = 2 * Math.PI / selectedBeads.length;
+        if (selectedBeads.length > 0) {
+          const radius = jewelryType === 'necklace' ? 140 : 100;
+          const angleStep = 2 * Math.PI / selectedBeads.length;
 
-        selectedBeads.forEach((color, i) => {
-          const bead = document.createElement('div');
-          bead.className = 'jewelry-bead';
-          bead.style.backgroundColor = color;
+          selectedBeads.forEach((color, i) => {
+            const bead = document.createElement('div');
+            bead.className = 'jewelry-bead';
+            bead.style.backgroundColor = color;
 
-          const angle = i * angleStep;
-          bead.style.left = `${centerX + radius * Math.cos(angle) - 15}px`;
-          bead.style.top = `${centerY + radius * Math.sin(angle) - 15}px`;
+            const angle = i * angleStep;
+            bead.style.left = `${centerX + radius * Math.cos(angle) - 15}px`;
+            bead.style.top = `${centerY + radius * Math.sin(angle) - 15}px`;
 
-          bead.onclick = () => removeBead(i);
-          beadsEls.push(bead);
-        });
+            bead.onclick = () => removeBead(i);
+            attachTooltip(bead, color);
+            beadsEls.push(bead);
+          });
+        }
       }
 
       beadsEls.forEach(bead => preview.appendChild(bead));
@@ -156,30 +177,77 @@
       const beadsEls = [];
       if (beadCount === 0) return beadsEls;
 
-      const scale = 130;
-      const angleStart = 0;
-      const angleEnd = 2 * Math.PI;
+      const a = 1.5;
+      const scale = 140;
+
+      const leftOffset = -90;
+      const rightOffset = 90;
 
       for (let i = 0; i < beadCount; i++) {
-        const t = angleStart + ((angleEnd - angleStart) * i) / (beadCount - 1 || 1);
+        const t = (2 * Math.PI * i) / beadCount;
 
-        const tx = Math.sin(t) * (1 - Math.cos(t));
-        const ty = -Math.cos(t);
+        const offsetX = scale * Math.sin(t) * Math.pow(Math.sin(t / 2), a);
+        const offsetY = -scale * Math.cos(t);
 
-        const x = centerX + tx * scale - 15;
-        const y = centerY + ty * scale - 15;
+        const leftX = centerX + leftOffset + offsetX - 15;
+        const leftY = centerY + offsetY - 15;
+        const rightX = centerX + rightOffset + offsetX - 15;
+        const rightY = centerY + offsetY - 15;
 
-        const bead = document.createElement('div');
-        bead.className = 'jewelry-bead';
-        bead.style.backgroundColor = beads[i];
-        bead.style.left = `${x}px`;
-        bead.style.top = `${y}px`;
+        const leftBead = document.createElement('div');
+        leftBead.className = 'jewelry-bead';
+        leftBead.style.backgroundColor = beads[i];
+        leftBead.style.left = `${leftX}px`;
+        leftBead.style.top = `${leftY}px`;
+        attachTooltip(leftBead, beads[i]);
+        leftBead.onclick = () => removeBead(i);
 
-        bead.onclick = () => removeBead(i);
-        beadsEls.push(bead);
+        const rightBead = document.createElement('div');
+        rightBead.className = 'jewelry-bead';
+        rightBead.style.backgroundColor = beads[i];
+        rightBead.style.left = `${rightX}px`;
+        rightBead.style.top = `${rightY}px`;
+        attachTooltip(rightBead, beads[i]);
+        rightBead.onclick = () => removeBead(i);
+
+        beadsEls.push(leftBead, rightBead);
       }
+
       return beadsEls;
     }
+
+    function attachTooltip(element, color) {
+      element.addEventListener('mouseenter', e => {
+        tooltip.textContent = `Bead color: ${color}`;
+        tooltip.style.opacity = '1';
+        positionTooltip(e);
+      });
+      element.addEventListener('mousemove', e => {
+        positionTooltip(e);
+      });
+      element.addEventListener('mouseleave', () => {
+        tooltip.style.opacity = '0';
+      });
+    }
+
+    function positionTooltip(event) {
+      const padding = 10;
+      const tooltipRect = tooltip.getBoundingClientRect();
+      let x = event.clientX + padding;
+      let y = event.clientY + padding;
+
+      if (x + tooltipRect.width > window.innerWidth) {
+        x = event.clientX - tooltipRect.width - padding;
+      }
+      if (y + tooltipRect.height > window.innerHeight) {
+        y = event.clientY - tooltipRect.height - padding;
+      }
+
+      tooltip.style.left = x + 'px';
+      tooltip.style.top = y + 'px';
+    }
+
+    updatePreview();
   </script>
 </body>
 </html>
