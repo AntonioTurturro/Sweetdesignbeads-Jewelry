@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Custom Bead Jewelry Order</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marianna Turt's Custom Jewelry</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -18,12 +18,6 @@
       text-align: center;
       color: #333;
     }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-      color: #555;
-    }
     .color-palette {
       display: flex;
       flex-wrap: wrap;
@@ -37,21 +31,7 @@
       cursor: pointer;
       border: 2px solid transparent;
       box-shadow: 0 0 4px rgba(0,0,0,0.1);
-      transition: border-color 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
     }
-    .color-swatch:hover {
-      border-color: #555;
-    }
-    .color-swatch.selected {
-      border-color: #2a8fbd;
-      box-shadow: 0 0 6px #2a8fbd;
-    }
-
-    /* Jewelry preview container */
     .jewelry-preview {
       margin-top: 10px;
       position: relative;
@@ -62,54 +42,20 @@
       background: white;
       border-radius: 50%;
       border: 1.5px solid #ccc;
-      box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
-      transform: scaleY(-1); /* Flip vertically */
+      transform: scaleY(-1);
     }
     .jewelry-bead {
       width: 30px;
       height: 30px;
       border-radius: 50%;
       border: 1.5px solid #666;
-      cursor: pointer;
       position: absolute;
-      transition: transform 0.3s ease;
-      transform-origin: center center;
       box-sizing: border-box;
     }
-    .jewelry-bead:hover::after {
-      content: '✕';
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      background: #f44336;
-      color: white;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      font-size: 12px;
-      line-height: 16px;
-      text-align: center;
-      pointer-events: none;
-      user-select: none;
-      transform: scaleY(-1); /* undo flip for the X */
-    }
-
-    /* Jewelry type selector */
     .jewelry-type {
       margin-top: 20px;
       text-align: center;
     }
-    .jewelry-type label {
-      margin-right: 20px;
-      font-weight: normal;
-      cursor: pointer;
-    }
-    input[type="radio"] {
-      margin-right: 6px;
-      cursor: pointer;
-    }
-
-    /* Remove all button */
     #removeAllBtn {
       margin-top: 10px;
       background-color: #f44336;
@@ -122,268 +68,120 @@
       display: block;
       margin-left: auto;
       margin-right: auto;
-      user-select: none;
-    }
-    #removeAllBtn:hover {
-      background-color: #d32f2f;
-    }
-
-    input[type="text"], input[type="email"], input[type="number"] {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    button[type="submit"] {
-      margin-top: 20px;
-      width: 100%;
-      padding: 10px;
-      background-color: #2a8fbd;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button[type="submit"]:hover {
-      background-color: #246b8a;
     }
   </style>
 </head>
 <body>
-  <h1>Custom Bead Jewelry Order</h1>
-  <form id="orderForm" action="your-server-endpoint" method="POST">
-    <label>Choose bead colors:</label>
-    <div class="color-palette" id="colorPalette"></div>
+  <h1>Custom Bead Jewelry by Marianna Turt</h1>
+  <label>Choose Bead Colors:</label>
+  <div class="color-palette" id="colorPalette"></div>
 
-    <div class="jewelry-type" role="radiogroup" aria-label="Select jewelry type">
-      <label><input type="radio" name="jewelryType" value="necklace" checked /> Necklace</label>
-      <label><input type="radio" name="jewelryType" value="bracelet" /> Bracelet</label>
-      <label><input type="radio" name="jewelryType" value="earrings" /> Earrings</label>
-    </div>
+  <div class="jewelry-type">
+    <label><input type="radio" name="jewelryType" value="necklace" checked> Necklace</label>
+    <label><input type="radio" name="jewelryType" value="bracelet"> Bracelet</label>
+    <label><input type="radio" name="jewelryType" value="earrings"> Earrings</label>
+  </div>
 
-    <button type="button" id="removeAllBtn" aria-label="Remove all beads">Remove All Beads</button>
+  <button id="removeAllBtn">Remove All Beads</button>
 
-    <label>Jewelry preview (click bead to remove):</label>
-    <div class="jewelry-preview" id="jewelryPreview" aria-label="Jewelry preview area" role="list"></div>
-
-    <input type="hidden" name="beadColors" id="beadColorsInput" />
-    <input type="hidden" name="jewelryTypeSelected" id="jewelryTypeSelected" value="necklace" />
-
-    <label for="quantity">Quantity:</label>
-    <input
-      type="number"
-      id="quantity"
-      name="quantity"
-      min="1"
-      value="1"
-      required
-    />
-
-    <label for="customerName">Your Name:</label>
-    <input
-      type="text"
-      id="customerName"
-      name="customerName"
-      placeholder="Full Name"
-      required
-    />
-
-    <label for="customerEmail">Email Address:</label>
-    <input
-      type="email"
-      id="customerEmail"
-      name="customerEmail"
-      placeholder="you@example.com"
-      required
-    />
-
-    <button type="submit">Submit Order</button>
-  </form>
+  <div class="jewelry-preview" id="jewelryPreview"></div>
 
   <script>
-    (() => {
-      const colors = [
-        { name: 'Red', value: '#e74c3c' },
-        { name: 'Blue', value: '#3498db' },
-        { name: 'Green', value: '#27ae60' },
-        { name: 'Yellow', value: '#f1c40f' },
-        { name: 'Purple', value: '#9b59b6' },
-        { name: 'Black', value: '#2c3e50' },
-        { name: 'White', value: '#ecf0f1' },
-        { name: 'Pink', value: '#fd79a8' },
-        { name: 'Orange', value: '#e67e22' }
-      ];
+    const colors = ['#e74c3c','#3498db','#27ae60','#f1c40f','#9b59b6','#2c3e50','#ecf0f1','#fd79a8','#e67e22'];
+    const palette = document.getElementById('colorPalette');
+    const preview = document.getElementById('jewelryPreview');
+    const removeBtn = document.getElementById('removeAllBtn');
+    let selectedBeads = [];
+    let jewelryType = 'necklace';
 
-      const colorPalette = document.getElementById('colorPalette');
-      const jewelryPreview = document.getElementById('jewelryPreview');
-      const beadColorsInput = document.getElementById('beadColorsInput');
-      const jewelryTypeSelectedInput = document.getElementById('jewelryTypeSelected');
-      const jewelryTypeRadios = document.querySelectorAll('input[name="jewelryType"]');
-      const removeAllBtn = document.getElementById('removeAllBtn');
-
-      let selectedBeads = [];
-      let jewelryType = 'necklace';
-
-      // Create color swatches
-      colors.forEach(color => {
-        const swatch = document.createElement('div');
-        swatch.className = 'color-swatch';
-        swatch.title = color.name;
-        swatch.style.backgroundColor = color.value;
-        swatch.setAttribute('tabindex', 0);
-        swatch.setAttribute('role', 'button');
-        swatch.setAttribute('aria-label', `Add ${color.name} bead`);
-        swatch.dataset.colorValue = color.value;
-
-        swatch.addEventListener('click', () => {
-          addBead(color.value);
-        });
-        swatch.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            addBead(color.value);
-          }
-        });
-
-        colorPalette.appendChild(swatch);
-      });
-
-      jewelryTypeRadios.forEach(radio => {
-        radio.addEventListener('change', () => {
-          jewelryType = radio.value;
-          jewelryTypeSelectedInput.value = jewelryType;
-          updatePreview();
-        });
-      });
-
-      removeAllBtn.addEventListener('click', () => {
-        selectedBeads = [];
+    colors.forEach(color => {
+      const swatch = document.createElement('div');
+      swatch.className = 'color-swatch';
+      swatch.style.backgroundColor = color;
+      swatch.onclick = () => {
+        selectedBeads.push(color);
         updatePreview();
-      });
+      };
+      palette.appendChild(swatch);
+    });
 
-      function addBead(colorValue) {
-        selectedBeads.push(colorValue);
+    document.querySelectorAll('input[name="jewelryType"]').forEach(radio => {
+      radio.onchange = () => {
+        jewelryType = radio.value;
         updatePreview();
-      }
+      };
+    });
 
-      function removeBead(index) {
-        selectedBeads.splice(index, 1);
-        updatePreview();
-      }
+    removeBtn.onclick = () => {
+      selectedBeads = [];
+      updatePreview();
+    };
 
-      // Draw beads in a bigger, more open U shape for earrings
-      function drawEarrings(beads, centerX, centerY) {
-        const beadCount = beads.length;
-        const beadsEls = [];
+    function updatePreview() {
+      preview.innerHTML = '';
+      const centerX = preview.clientWidth / 2;
+      const centerY = preview.clientHeight / 2;
 
-        if (beadCount === 0) return beadsEls;
+      let beadsEls = [];
+      if (jewelryType === 'earrings') {
+        beadsEls = drawEarrings(selectedBeads, centerX, centerY);
+      } else {
+        const radius = jewelryType === 'necklace' ? 140 : 100;
+        const angleStep = 2 * Math.PI / selectedBeads.length;
 
-        const radius = 150;
-        const startAngle = (160 * Math.PI) / 180;
-        const endAngle = (20 * Math.PI) / 180;
-        const arcLength = startAngle - endAngle;
-
-        beads.forEach((color, i) => {
+        selectedBeads.forEach((color, i) => {
           const bead = document.createElement('div');
           bead.className = 'jewelry-bead';
           bead.style.backgroundColor = color;
-          bead.setAttribute('role', 'listitem');
-          bead.setAttribute('tabindex', 0);
-          bead.title = `Bead color: ${color}`;
 
-          const angle = startAngle - (arcLength * i / (beadCount - 1 || 1));
+          const angle = i * angleStep;
+          bead.style.left = `${centerX + radius * Math.cos(angle) - 15}px`;
+          bead.style.top = `${centerY + radius * Math.sin(angle) - 15}px`;
 
-          const x = centerX + radius * Math.cos(angle) - 15;
-          const y = centerY + radius * Math.sin(angle) - 15;
-
-          bead.style.left = `${x}px`;
-          bead.style.top = `${y}px`;
-
+          bead.onclick = () => removeBead(i);
           beadsEls.push(bead);
         });
-
-        const line = document.createElement('div');
-        line.style.position = 'absolute';
-        line.style.width = '200px';
-        line.style.height = '3px';
-        line.style.backgroundColor = '#999';
-        line.style.borderRadius = '2px';
-
-        const topY = centerY + radius * Math.sin((startAngle + endAngle)/2) - 30;
-        const topX = centerX - 100;
-
-        line.style.left = `${topX}px`;
-        line.style.top = `${topY}px`;
-        line.style.transform = 'scaleY(-1)';
-
-        jewelryPreview.appendChild(line);
-
-        return beadsEls;
       }
 
-      function updatePreview() {
-        jewelryPreview.innerHTML = '';
-        const beadCount = selectedBeads.length;
-        if (beadCount === 0) {
-          beadColorsInput.value = '';
-          return;
-        }
+      beadsEls.forEach(bead => preview.appendChild(bead));
+    }
 
-        const centerX = jewelryPreview.clientWidth / 2;
-        const centerY = jewelryPreview.clientHeight / 2;
+    function removeBead(index) {
+      selectedBeads.splice(index, 1);
+      updatePreview();
+    }
 
-        let beadsEls = [];
+    function drawEarrings(beads, centerX, centerY) {
+      const beadCount = beads.length;
+      const beadsEls = [];
+      if (beadCount === 0) return beadsEls;
 
-        if (jewelryType === 'necklace' || jewelryType === 'bracelet') {
-          const radius = jewelryType === 'necklace' ? 140 : 100;
-          const angleStep = 2 * Math.PI / beadCount;
+      const scale = 130;
+      const angleStart = 0;
+      const angleEnd = 2 * Math.PI;
 
-          selectedBeads.forEach((color, i) => {
-            const bead = document.createElement('div');
-            bead.className = 'jewelry-bead';
-            bead.style.backgroundColor = color;
-            bead.setAttribute('role', 'listitem');
-            bead.setAttribute('tabindex', 0);
-            bead.title = `Bead color: ${color}`;
+      for (let i = 0; i < beadCount; i++) {
+        const t = angleStart + ((angleEnd - angleStart) * i) / (beadCount - 1 || 1);
 
-            const angle = i * angleStep;
-            const x = centerX + radius * Math.cos(angle) - 15;
-            const y = centerY + radius * Math.sin(angle) - 15;
+        const tx = Math.sin(t) * (1 - Math.cos(t));
+        const ty = -Math.cos(t);
 
-            bead.style.left = `${x}px`;
-            bead.style.top = `${y}px`;
+        const x = centerX + tx * scale - 15;
+        const y = centerY + ty * scale - 15;
 
-            beadsEls.push(bead);
-          });
-        } else if (jewelryType === 'earrings') {
-          beadsEls = drawEarrings(selectedBeads, centerX, centerY);
-        }
+        const bead = document.createElement('div');
+        bead.className = 'jewelry-bead';
+        bead.style.backgroundColor = beads[i];
+        bead.style.left = `${x}px`;
+        bead.style.top = `${y}px`;
 
-        beadsEls.forEach((bead, i) => {
-          bead.addEventListener('click', () => removeBead(i));
-          bead.addEventListener('keydown', (e) => {
-            if (e.key === 'Delete' || e.key === 'Backspace') {
-              e.preventDefault();
-              removeBead(i);
-            }
-          });
-          jewelryPreview.appendChild(bead);
-        });
-
-        beadColorsInput.value = selectedBeads.join(',');
+        bead.onclick = () => removeBead(i);
+        beadsEls.push(bead);
       }
-
-      document.getElementById('orderForm').addEventListener('submit', (e) => {
-        if (selectedBeads.length === 0) {
-          e.preventDefault();
-          alert('Please select at least one bead color for your jewelry.');
-        }
-      });
-    })();
+      return beadsEls;
+    }
   </script>
 </body>
 </html>
+
 
