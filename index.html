@@ -274,19 +274,17 @@
         updatePreview();
       }
 
-      // Draw beads in a U shape for earrings
+      // Draw beads in a bigger, more open U shape for earrings
       function drawEarrings(beads, centerX, centerY) {
         const beadCount = beads.length;
         const beadsEls = [];
 
         if (beadCount === 0) return beadsEls;
 
-        // Angle range for U shape: ~120° (2/3 pi) arc centered downward
-        // Start from 150° to 30° in radians (converted)
-        const startAngle = (150 * Math.PI) / 180; // 150 degrees
-        const endAngle = (30 * Math.PI) / 180;    // 30 degrees
+        const radius = 150;
+        const startAngle = (160 * Math.PI) / 180;
+        const endAngle = (20 * Math.PI) / 180;
         const arcLength = startAngle - endAngle;
-        const radius = 110;
 
         beads.forEach((color, i) => {
           const bead = document.createElement('div');
@@ -296,7 +294,6 @@
           bead.setAttribute('tabindex', 0);
           bead.title = `Bead color: ${color}`;
 
-          // Angle step for beads on the U shape arc
           const angle = startAngle - (arcLength * i / (beadCount - 1 || 1));
 
           const x = centerX + radius * Math.cos(angle) - 15;
@@ -308,28 +305,25 @@
           beadsEls.push(bead);
         });
 
-        // Draw connecting line at the top (like U shape top bar)
         const line = document.createElement('div');
         line.style.position = 'absolute';
-        line.style.width = '140px';
+        line.style.width = '200px';
         line.style.height = '3px';
         line.style.backgroundColor = '#999';
         line.style.borderRadius = '2px';
 
-        // Position top line between start and end beads horizontally
         const topY = centerY + radius * Math.sin((startAngle + endAngle)/2) - 30;
-        const topX = centerX - 70; // half line width left from center
+        const topX = centerX - 100;
 
         line.style.left = `${topX}px`;
         line.style.top = `${topY}px`;
-        line.style.transform = 'scaleY(-1)'; // undo flip for line
+        line.style.transform = 'scaleY(-1)';
 
         jewelryPreview.appendChild(line);
 
         return beadsEls;
       }
 
-      // Main preview update function
       function updatePreview() {
         jewelryPreview.innerHTML = '';
         const beadCount = selectedBeads.length;
@@ -355,7 +349,6 @@
             bead.setAttribute('tabindex', 0);
             bead.title = `Bead color: ${color}`;
 
-            // full circle positions
             const angle = i * angleStep;
             const x = centerX + radius * Math.cos(angle) - 15;
             const y = centerY + radius * Math.sin(angle) - 15;
@@ -369,7 +362,6 @@
           beadsEls = drawEarrings(selectedBeads, centerX, centerY);
         }
 
-        // Add event listeners to beads for removal
         beadsEls.forEach((bead, i) => {
           bead.addEventListener('click', () => removeBead(i));
           bead.addEventListener('keydown', (e) => {
@@ -394,3 +386,4 @@
   </script>
 </body>
 </html>
+
