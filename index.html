@@ -177,7 +177,7 @@
       const beadsEls = [];
       if (beadCount === 0) return beadsEls;
 
-      const a = 1.5;
+      const a = 1.5; // controls roundness
       const scale = 140;
 
       const leftOffset = -90;
@@ -186,6 +186,7 @@
       for (let i = 0; i < beadCount; i++) {
         const t = (2 * Math.PI * i) / beadCount;
 
+        // Parametric teardrop curve:
         const offsetX = scale * Math.sin(t) * Math.pow(Math.sin(t / 2), a);
         const offsetY = -scale * Math.cos(t);
 
@@ -251,5 +252,6 @@
   </script>
 </body>
 </html>
+
 
 
